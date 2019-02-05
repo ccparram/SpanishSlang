@@ -3,11 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.allSlang.AllSlangFragment">
+    tools:context=".ui.allSlang.AllSlangFragment"
+    android:paddingTop="@dimen/activity_vertical_margin_small"
+    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+    android:paddingRight="@dimen/activity_horizontal_margin_small">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_slang"
+        tools:listitem="@layout/slang_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="All slang" />
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>
