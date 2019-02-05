@@ -11,4 +11,6 @@ public interface SlangDao {
     @Insert
     void insert(SlangEntry slangEntry);
 
+    @Insert
+    void bulkInsert(List<SlangEntry> slangEntries);
 }

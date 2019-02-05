@@ -11,6 +11,7 @@ public class SlangEntry {
     @PrimaryKey
     @NonNull
     private final int id;
+    @NonNull
     private final String title;
 
     public SlangEntry(int id, String title) {

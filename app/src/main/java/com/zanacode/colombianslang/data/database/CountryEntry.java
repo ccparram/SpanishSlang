@@ -2,15 +2,15 @@ package com.zanacode.colombianslang.data.database;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "country", indices = {@Index(value = {"name"}, unique = true)})
+@Entity(tableName = "country")
 public class CountryEntry {
 
     @PrimaryKey
     @NonNull
     private final String code;
+    @NonNull
     private final String name;
 
     public CountryEntry(String code, String name) {
