@@ -12,17 +12,18 @@ public class SpanishSlangRepository {
     private static SpanishSlangRepository instance;
     private static final Object LOCK = new Object();
     private final SlangDao slangDao;
-    private final AppExecutors executors;
+    private final CountryDao countryDao;
 
-    private SpanishSlangRepository(SlangDao slangDao, AppExecutors executors) {
+    private SpanishSlangRepository(SlangDao slangDao, CountryDao countryDao) {
         this.slangDao = slangDao;
-        this.executors = executors;
+        this.countryDao = countryDao;
     }
 
-    public static SpanishSlangRepository getInstance(SlangDao slangDao, AppExecutors executors){
+    public static SpanishSlangRepository getInstance(SlangDao slangDao,
+                                                     CountryDao countryDao){
         if (instance == null){
             synchronized (LOCK) {
-                instance = new SpanishSlangRepository(slangDao, executors);
+                instance = new SpanishSlangRepository(slangDao, countryDao);
             }
         }
         return instance;
@@ -30,6 +31,10 @@ public class SpanishSlangRepository {
 
     public LiveData<List<SlangEntry>> getAllSlangs() {
         return slangDao.getAllSlangs();
+    }
+
+    public LiveData<List<CountryEntry>> getAllCountires() {
+        return countryDao.getAllCountries();
     }
 
 }

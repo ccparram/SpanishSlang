@@ -15,6 +15,7 @@ public abstract class SpanishSlangDatabase extends RoomDatabase {
     private static volatile SpanishSlangDatabase instance;
 
     public abstract SlangDao slangDao();
+    public abstract CountryDao countryDao();
 
     public static SpanishSlangDatabase getInstance(Context context) {
 
