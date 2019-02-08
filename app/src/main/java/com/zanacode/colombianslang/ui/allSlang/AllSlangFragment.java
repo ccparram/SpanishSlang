@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.orhanobut.logger.Logger;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.utilities.Injector;
 
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AllSlangFragment extends Fragment {
+public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdapterOnItemCliclListener {
 
     AllSlangFragmentViewModel viewModel;
     @BindView(R.id.recycle_slang)
@@ -48,7 +49,7 @@ public class AllSlangFragment extends Fragment {
         recyclerSlang.setLayoutManager(layoutManager);
         recyclerSlang.hasFixedSize();
 
-        SlangAdapter adapter = new SlangAdapter(getContext());
+        SlangAdapter adapter = new SlangAdapter(getContext(), this);
 
         viewModel.getSlangEntries().observe(this, slangEntries -> {
             adapter.swapItems(slangEntries);
@@ -66,5 +67,10 @@ public class AllSlangFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onItemClic(int slangId) {
+        Logger.e("id: " + slangId);
     }
 }

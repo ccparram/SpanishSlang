@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapterViewHolder> {
 
-    Context context;
-    List<SlangEntry> slangEntries;
+    private Context context;
+    private List<SlangEntry> slangEntries;
+    private SlangAdapterOnItemCliclListener slangAdaptarOnItemCliclHandler;
 
-    public SlangAdapter(Context context) {
+    public SlangAdapter(Context context, SlangAdapterOnItemCliclListener listener) {
         this.context = context;
+        this.slangAdaptarOnItemCliclHandler = listener;
     }
 
     @NonNull
@@ -48,13 +50,25 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
         notifyDataSetChanged();
     };
 
-    class SlangAdapterViewHolder extends RecyclerView.ViewHolder{
+    class SlangAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView slangTitleTxt;
 
         public SlangAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             slangTitleTxt = itemView.findViewById(R.id.slang_card_title);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            int slandId = slangEntries.get(getAdapterPosition()).getId();
+            slangAdaptarOnItemCliclHandler.onItemClic(slandId);
+        }
+    }
+
+    public interface SlangAdapterOnItemCliclListener {
+        void onItemClic(int slangId);
     }
 }
