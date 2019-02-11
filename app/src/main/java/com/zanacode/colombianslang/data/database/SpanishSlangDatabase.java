@@ -7,7 +7,8 @@ import androidx.room.RoomDatabase;
 
 @androidx.room.Database(entities = {SlangEntry.class,
                                     CountryEntry.class,
-                                    MeaningEntry.class}, version = 1)
+                                    MeaningEntry.class}, version = 1,
+                                    exportSchema = false)
 public abstract class SpanishSlangDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "spanish_slang";

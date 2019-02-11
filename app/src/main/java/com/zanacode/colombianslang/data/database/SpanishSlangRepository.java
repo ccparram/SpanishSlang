@@ -1,8 +1,6 @@
 package com.zanacode.colombianslang.data.database;
 
 
-import com.zanacode.colombianslang.AppExecutors;
-
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -35,6 +33,10 @@ public class SpanishSlangRepository {
 
     public LiveData<List<CountryEntry>> getAllCountires() {
         return countryDao.getAllCountries();
+    }
+
+    public LiveData<List<MeaningsCountryJoin>> getMeaningsCountryJoinById(int id) {
+        return slangDao.getMeaningSlangCountryJoinById(id);
     }
 
 }

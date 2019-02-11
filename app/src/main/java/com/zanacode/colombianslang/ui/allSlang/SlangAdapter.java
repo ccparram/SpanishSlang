@@ -18,17 +18,16 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
 
     private Context context;
     private List<SlangEntry> slangEntries;
-    private SlangAdapterOnItemCliclListener slangAdaptarOnItemCliclHandler;
+    private SlangAdapterOnItemCliclListener slangAdaptarOnItemClickHandler;
 
     public SlangAdapter(Context context, SlangAdapterOnItemCliclListener listener) {
         this.context = context;
-        this.slangAdaptarOnItemCliclHandler = listener;
+        this.slangAdaptarOnItemClickHandler = listener;
     }
 
     @NonNull
     @Override
     public SlangAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.slang_card, parent, false);
         view.setFocusable(true);
         return new SlangAdapterViewHolder(view);
@@ -54,21 +53,20 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
 
         TextView slangTitleTxt;
 
-        public SlangAdapterViewHolder(@NonNull View itemView) {
+        SlangAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             slangTitleTxt = itemView.findViewById(R.id.slang_card_title);
-
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int slandId = slangEntries.get(getAdapterPosition()).getId();
-            slangAdaptarOnItemCliclHandler.onItemClic(slandId);
+            SlangEntry slang = slangEntries.get(getAdapterPosition());
+            slangAdaptarOnItemClickHandler.onItemClick(slang.getId(), slang.getTitle());
         }
     }
 
     public interface SlangAdapterOnItemCliclListener {
-        void onItemClic(int slangId);
+        void onItemClick(int slangId, String slangTitle);
     }
 }

@@ -6,11 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
 import com.zanacode.colombianslang.R;
+import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.utilities.Injector;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 
 public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdapterOnItemCliclListener {
 
-    AllSlangFragmentViewModel viewModel;
+    private AllSlangFragmentViewModel viewModel;
     @BindView(R.id.recycle_slang)
     RecyclerView recyclerSlang;
 
@@ -70,7 +71,11 @@ public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdap
     }
 
     @Override
-    public void onItemClic(int slangId) {
-        Logger.e("id: " + slangId);
+    public void onItemClick(int slangId, String slangTitle) {
+        SlangDetailFragment fragment = SlangDetailFragment.newInstance(slangId, slangTitle);
+        FragmentTransaction transaction = getParentFragment().getFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_content_frame, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
