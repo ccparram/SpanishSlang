@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    MenuItem currentItemSelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         setupDrawerContent(navView);
+        navigate(navView.getMenu().getItem(0));
     }
 
     @Override
@@ -89,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigate(final MenuItem menuItem) {
+
+        if (currentItemSelected != null) {
+            if ( currentItemSelected.getItemId() == menuItem.getItemId()) {
+                return;
+            }
+        }
         Fragment navFragment = null;
 
         switch (menuItem.getItemId()) {
@@ -113,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 navFragment = AboutFragment.newInstance();
                 break;
         }
+        currentItemSelected = menuItem;
 
         if (navFragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
