@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="@dimen/activity_vertical_margin_small"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/country_detail_nested_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="This is the description of the slang"/>
+
+    <TextView
+        android:id="@+id/country_destail_nested_example"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="This is the example"/>
+
+</LinearLayout>
