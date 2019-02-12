@@ -1,22 +1,20 @@
 package com.zanacode.colombianslang.ui.main;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.ui.about.AboutFragment;
 import com.zanacode.colombianslang.ui.favorite.FavoriteFragment;
 import com.zanacode.colombianslang.ui.random.RandomFragment;
 import com.zanacode.colombianslang.ui.slang.SlangFragment;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
@@ -24,40 +22,26 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final Handler drawerHandler = new Handler();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.nav_view)
-    NavigationView navView;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-
-    MenuItem currentItemSelected;
+    @BindView(R.id.bottomNavigationView)
+    BottomNavigationView bottomNavigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) ->{
+            navigate(menuItem);
+            return true;
+        });
+        bottomNavigationView.setOnNavigationItemReselectedListener((@NonNull MenuItem menuItem) -> {
 
-        setupDrawerContent(navView);
-        navigate(navView.getMenu().getItem(0));
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        });
+        navigate(bottomNavigationView.getMenu().getItem(0));
     }
 
     @Override
@@ -78,26 +62,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void navigate(@NonNull MenuItem menuItem) {
 
-        navigationView.setNavigationItemSelectedListener((final MenuItem menuItem) -> {
-
-            drawerHandler.removeCallbacksAndMessages(null);
-            drawerHandler.postDelayed(() -> {
-                navigate(menuItem);
-                }, 250);
-            drawerLayout.closeDrawers();
-                    return true;
-        });
-    }
-
-    private void navigate(final MenuItem menuItem) {
-
-        if (currentItemSelected != null) {
-            if ( currentItemSelected.getItemId() == menuItem.getItemId()) {
-                return;
-            }
-        }
         Fragment navFragment = null;
 
         switch (menuItem.getItemId()) {
@@ -122,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 navFragment = AboutFragment.newInstance();
                 break;
         }
-        currentItemSelected = menuItem;
 
         if (navFragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
