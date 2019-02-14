@@ -6,10 +6,11 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zanacode.colombianslang.R;
-import com.zanacode.colombianslang.ui.about.AboutFragment;
 import com.zanacode.colombianslang.ui.favorite.FavoriteFragment;
 import com.zanacode.colombianslang.ui.random.RandomFragment;
+import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.ui.slang.SlangFragment;
+import com.zanacode.colombianslang.utilities.Injector;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.mauker.materialsearchview.MaterialSearchView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView bottomNavigationView;
+    @BindView(R.id.search_view)
+    MaterialSearchView searchView;
+
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +41,35 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) ->{
+        MainViewModelFactory factory = Injector.provideMainViewModelFactory(getApplicationContext());
+        viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+
+        searchView.setOnItemClickListener((parent, view, position, id) -> {
+            String suggestion = searchView.getSuggestionAtPosition(position);
+            searchView.setQuery(suggestion, false);
+            showSlangDetail(suggestion);
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                int suggestionsLength = searchView.getAdapter().getCount();
+
+                if (suggestionsLength == 0) return true;
+                if (suggestionsLength == 1) showSlangDetail(searchView.getSuggestionAtPosition(0));
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
+            searchView.addSuggestions(slangSuggestions);
+        });
+
+        bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) -> {
             navigate(menuItem);
             return true;
         });
@@ -42,6 +77,21 @@ public class MainActivity extends AppCompatActivity {
 
         });
         navigate(bottomNavigationView.getMenu().getItem(0));
+    }
+
+    private void showSlangDetail(String slangTitle) {
+        viewModel.getSlangIdByTitle(slangTitle).observe(this, slangId -> {
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag(SlangDetailFragment.TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            SlangDetailFragment newFragment = SlangDetailFragment.newInstance(slangId, slangTitle);
+            newFragment.show(ft, SlangDetailFragment.TAG);
+        });
     }
 
     @Override
@@ -53,12 +103,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if (id == R.id.action_search) {
+            searchView.openSearch();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -82,17 +134,22 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
                 navFragment = RandomFragment.newInstance();
                 break;
-            case R.id.nav_about:
-                setTitle(menuItem.getTitle());
-                menuItem.setChecked(true);
-                navFragment = AboutFragment.newInstance();
-                break;
         }
 
         if (navFragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             transaction.replace(R.id.main_content_frame, navFragment).commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isOpen()) {
+            // Close the search on the back button press.
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
         }
     }
 }

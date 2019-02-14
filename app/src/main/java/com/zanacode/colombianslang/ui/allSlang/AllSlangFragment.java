@@ -72,10 +72,19 @@ public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdap
 
     @Override
     public void onItemClick(int slangId, String slangTitle) {
+        showSlangDetail(slangId, slangTitle);
+    }
+
+    private void showSlangDetail(int slangId, String slangTitle ) {
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag(SlangDetailFragment.TAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
         SlangDetailFragment fragment = SlangDetailFragment.newInstance(slangId, slangTitle);
-        FragmentTransaction transaction = getParentFragment().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_content_frame, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        fragment.show(ft, SlangDetailFragment.TAG);
     }
 }

@@ -20,4 +20,9 @@
         app:menu="@menu/bottom_navigation_main"
         android:layout_alignParentBottom="true"/>
 
+    <br.com.mauker.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

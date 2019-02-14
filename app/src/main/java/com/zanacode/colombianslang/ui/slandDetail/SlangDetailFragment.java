@@ -1,24 +1,28 @@
 package com.zanacode.colombianslang.ui.slandDetail;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.utilities.Injector;
 
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SlangDetailFragment extends Fragment {
+public class SlangDetailFragment extends DialogFragment {
+
+    public static final String TAG = "DetailDialog";
 
     public static final String ARG_SLANG_ID = "1";
     public static final String ARG_SLANG_TITLE = "2";
@@ -48,6 +52,7 @@ public class SlangDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slang_detail, container, false);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         if (getArguments() != null) {
             slangId = getArguments().getInt(ARG_SLANG_ID);
@@ -70,6 +75,19 @@ public class SlangDetailFragment extends Fragment {
             recycler.setAdapter(adapter);
         });
         return view;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 
     @Override

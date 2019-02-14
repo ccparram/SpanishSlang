@@ -18,17 +18,21 @@ public class SpanishSlangRepository {
     }
 
     public static SpanishSlangRepository getInstance(SlangDao slangDao,
-                                                     CountryDao countryDao){
-        if (instance == null){
+                                                     CountryDao countryDao) {
+        if (instance == null) {
             synchronized (LOCK) {
                 instance = new SpanishSlangRepository(slangDao, countryDao);
             }
         }
         return instance;
-    };
+    }
 
     public LiveData<List<SlangEntry>> getAllSlangs() {
         return slangDao.getAllSlangs();
+    }
+
+    public LiveData<String[]> getSlangSuggestions() {
+        return slangDao.getSlangSuggestions();
     }
 
     public LiveData<List<CountryEntry>> getAllCountires() {
@@ -39,4 +43,7 @@ public class SpanishSlangRepository {
         return slangDao.getMeaningSlangCountryJoinById(id);
     }
 
+    public LiveData<Integer> getSlangIdByTitle(String title) {
+        return slangDao.getSlangIdByTitle(title);
+    }
 }

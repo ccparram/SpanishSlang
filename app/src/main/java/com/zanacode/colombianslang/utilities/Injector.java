@@ -6,6 +6,7 @@ import com.zanacode.colombianslang.data.database.SpanishSlangDatabase;
 import com.zanacode.colombianslang.data.database.SpanishSlangRepository;
 import com.zanacode.colombianslang.ui.allSlang.AllSlangViewModelFactory;
 import com.zanacode.colombianslang.ui.country.CountryViewModelFactory;
+import com.zanacode.colombianslang.ui.main.MainViewModelFactory;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailViewModelFactory;
 
 public class Injector {
@@ -13,6 +14,11 @@ public class Injector {
     private static SpanishSlangRepository provideRepository(Context context) {
         SpanishSlangDatabase database = SpanishSlangDatabase.getInstance(context.getApplicationContext());
         return SpanishSlangRepository.getInstance(database.slangDao(), database.countryDao());
+    }
+
+    public static MainViewModelFactory provideMainViewModelFactory(Context context){
+        SpanishSlangRepository repository = provideRepository(context);
+        return new MainViewModelFactory(repository);
     }
 
     public static AllSlangViewModelFactory provideAllSlangViewModelFactory(Context context){

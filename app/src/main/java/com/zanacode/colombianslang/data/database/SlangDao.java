@@ -20,7 +20,14 @@ public interface SlangDao {
     @Query("SELECT * FROM slang")
     LiveData<List<SlangEntry>> getAllSlangs();
 
+    @Query("SELECT title FROM slang")
+    LiveData<String[]> getSlangSuggestions();
+
     @Transaction
     @Query("SELECT * FROM meaning JOIN country ON meaning.countryCode = country.code WHERE slangId = :id ")
     LiveData<List<MeaningsCountryJoin>> getMeaningSlangCountryJoinById(int id);
+
+    @Transaction
+    @Query("SELECT id FROM slang WHERE title = :title")
+    LiveData<Integer> getSlangIdByTitle(String title);
 }
