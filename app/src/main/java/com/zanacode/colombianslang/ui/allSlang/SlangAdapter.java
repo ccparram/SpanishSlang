@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zanacode.colombianslang.R;
@@ -18,11 +19,15 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
 
     private Context context;
     private List<SlangEntry> slangEntries;
-    private SlangAdapterOnItemClickListener slangAdaptarOnItemClickHandler;
+    private OnItemClickListener onItemClickHandler;
+    private OnFavoriteIconClickListener onIconClickHandler;
 
-    public SlangAdapter(Context context, SlangAdapterOnItemClickListener listener) {
+    public SlangAdapter(Context context,
+                        OnItemClickListener listener,
+                        OnFavoriteIconClickListener iconClickListener) {
         this.context = context;
-        this.slangAdaptarOnItemClickHandler = listener;
+        this.onItemClickHandler = listener;
+        this.onIconClickHandler = iconClickListener;
     }
 
     @NonNull
@@ -35,7 +40,10 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SlangAdapterViewHolder holder, int position) {
-        holder.slangTitleTxt.setText(slangEntries.get(position).getTitle());
+        SlangEntry slang = slangEntries.get(position);
+        holder.slangTitleTxt.setText(slang.getTitle());
+        int drawableId = slang.isFavorite() ? R.drawable.ic_heart : R.drawable.ic_heart_outline;
+        holder.slangFavoriteImg.setImageDrawable(context.getResources().getDrawable(drawableId));
     }
 
     @Override
@@ -52,21 +60,33 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
     class SlangAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView slangTitleTxt;
+        ImageView slangFavoriteImg;
 
         SlangAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             slangTitleTxt = itemView.findViewById(R.id.slang_card_title);
+            slangFavoriteImg = itemView.findViewById(R.id.slang_card_img_heart);
             itemView.setOnClickListener(this);
+            slangFavoriteImg.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             SlangEntry slang = slangEntries.get(getAdapterPosition());
-            slangAdaptarOnItemClickHandler.onItemClick(slang.getId(), slang.getTitle());
+
+            if (v.getId() == R.id.slang_card_img_heart) {
+                onIconClickHandler.onFavoriteIconClick(slang);
+            } else {
+                onItemClickHandler.onItemClick(slang);
+            }
         }
     }
 
-    public interface SlangAdapterOnItemClickListener {
-        void onItemClick(int slangId, String slangTitle);
+    public interface OnItemClickListener {
+        void onItemClick(SlangEntry slangEntry);
+    }
+
+    public interface OnFavoriteIconClickListener {
+        void onFavoriteIconClick(SlangEntry slangEntry);
     }
 }

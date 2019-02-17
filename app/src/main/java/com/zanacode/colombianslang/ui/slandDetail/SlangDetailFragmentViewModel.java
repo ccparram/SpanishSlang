@@ -26,4 +26,13 @@ public class SlangDetailFragmentViewModel extends ViewModel {
         this.currentSlantId = currentSlantId;
         meaningsCountryJoin = repository.getMeaningsCountryJoinById(currentSlantId);
     }
+
+    public LiveData<Integer> isSlangFavorite(int slangId) {
+        return repository.isSlangFavoriteById(slangId);
+    };
+
+    public void toggleIsFavoriteById(int slangId) {
+        repository.toggleIsFavoriteById(slangId);
+    }
+
 }

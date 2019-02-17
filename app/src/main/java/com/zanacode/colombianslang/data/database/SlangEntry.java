@@ -13,17 +13,33 @@ public class SlangEntry {
     private final int id;
     @NonNull
     private final String title;
+    @NonNull
+    private int isFavorite;
 
-    public SlangEntry(int id, String title) {
+    public SlangEntry(int id, @NonNull String title, @NonNull int isFavorite) {
         this.id = id;
         this.title = title;
+        this.isFavorite = isFavorite;
     }
 
     public int getId() {
         return id;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
+    }
+
+    public int getIsFavorite() {
+        return isFavorite;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite == 1;
+    }
+
+    public void setIsFavorite(Boolean isFavorite){
+        this.isFavorite = isFavorite ? 1 : 0;
     }
 }

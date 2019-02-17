@@ -1,6 +1,8 @@
 package com.zanacode.colombianslang.data.database;
 
 
+import com.zanacode.colombianslang.AppExecutors;
+
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -49,5 +51,21 @@ public class SpanishSlangRepository {
 
     public LiveData<Integer> getSlangIdByTitle(String title) {
         return slangDao.getSlangIdByTitle(title);
+    }
+
+    public void updateSlang(SlangEntry slangEntry) {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            slangDao.updateSlang(slangEntry);
+        });
+    }
+
+    public void toggleIsFavoriteById(int slangId) {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            slangDao.toggleIsFavoriteBySlandId(slangId);
+        });
+    }
+
+    public LiveData<Integer> isSlangFavoriteById(int slangId) {
+        return slangDao.isSlangFavoriteById(slangId);
     }
 }

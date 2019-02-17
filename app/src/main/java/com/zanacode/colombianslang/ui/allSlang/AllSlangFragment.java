@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zanacode.colombianslang.R;
+import com.zanacode.colombianslang.data.database.SlangEntry;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.utilities.Injector;
 
@@ -20,8 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdapterOnItemClickListener {
-
+public class AllSlangFragment extends Fragment implements
+        SlangAdapter.OnItemClickListener,
+        SlangAdapter.OnFavoriteIconClickListener {
 
     public static final String TAG = "AllSlangFragment";
     public static final String ARG_COUNTRY_CODE = "1";
@@ -80,7 +82,7 @@ public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdap
         recyclerSlang.setLayoutManager(layoutManager);
         recyclerSlang.hasFixedSize();
 
-        SlangAdapter adapter = new SlangAdapter(getContext(), this);
+        SlangAdapter adapter = new SlangAdapter(getContext(), this, this);
 
 
         if (isViewByContry) {
@@ -122,11 +124,11 @@ public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdap
     }
 
     @Override
-    public void onItemClick(int slangId, String slangTitle) {
-        showSlangDetail(slangId, slangTitle);
+    public void onItemClick(SlangEntry slangEntry) {
+        showSlangDetail(slangEntry);
     }
 
-    private void showSlangDetail(int slangId, String slangTitle) {
+    private void showSlangDetail(SlangEntry slangEntry) {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag(SlangDetailFragment.TAG);
@@ -135,7 +137,14 @@ public class AllSlangFragment extends Fragment implements SlangAdapter.SlangAdap
         }
         ft.addToBackStack(null);
 
-        SlangDetailFragment fragment = SlangDetailFragment.newInstance(slangId, slangTitle);
+        SlangDetailFragment fragment = SlangDetailFragment.newInstance(slangEntry.getId(),
+                                                                        slangEntry.getTitle());
         fragment.show(ft, SlangDetailFragment.TAG);
+    }
+
+    @Override
+    public void onFavoriteIconClick(SlangEntry slangEntry) {
+        slangEntry.setIsFavorite(!slangEntry.isFavorite());
+        viewModel.updateSlang(slangEntry);
     }
 }

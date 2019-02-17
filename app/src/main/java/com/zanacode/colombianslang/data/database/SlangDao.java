@@ -7,6 +7,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 @Dao
 public interface SlangDao {
@@ -33,4 +34,13 @@ public interface SlangDao {
     @Transaction
     @Query("SELECT id FROM slang WHERE title = :title")
     LiveData<Integer> getSlangIdByTitle(String title);
+
+    @Update()
+    void updateSlang(SlangEntry slang);
+
+    @Query("UPDATE slang SET isFavorite = NOT isFavorite WHERE id = :slangId")
+    void toggleIsFavoriteBySlandId(int slangId);
+
+    @Query("SELECT isFavorite FROM slang WHERE id = :slangId")
+    LiveData<Integer> isSlangFavoriteById(int slangId);
 }

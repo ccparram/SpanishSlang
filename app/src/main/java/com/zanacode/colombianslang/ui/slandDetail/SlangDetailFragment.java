@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zanacode.colombianslang.R;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SlangDetailFragment extends DialogFragment {
 
@@ -31,6 +33,8 @@ public class SlangDetailFragment extends DialogFragment {
     RecyclerView recycler;
     @BindView(R.id.slang_detail_txt_title)
     TextView slangDetailTxtTitle;
+    @BindView(R.id.img_slang_detail_heart)
+    ImageView slangDetailHeart;
 
     private SlangDetailFragmentViewModel viewModel;
     private int slangId;
@@ -62,6 +66,7 @@ public class SlangDetailFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         slangDetailTxtTitle.setText(slangTitle);
 
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
         recycler.hasFixedSize();
@@ -69,6 +74,11 @@ public class SlangDetailFragment extends DialogFragment {
         SlangDetailViewModelFactory factory = Injector.provideSlangDetailViewModelFactory(getActivity().getApplicationContext());
         viewModel = ViewModelProviders.of(this, factory).get(SlangDetailFragmentViewModel.class);
         viewModel.setCurrentSlangId(slangId);
+
+        viewModel.isSlangFavorite(slangId).observe(this, isFavorite -> {
+            int drawableId = isFavorite == 1 ? R.drawable.ic_heart : R.drawable.ic_heart_outline;
+            slangDetailHeart.setImageDrawable(getResources().getDrawable(drawableId));
+        });
 
         viewModel.getCurrentMeaningsCountryJoin().observe(this, currentMeaningsCountryJoin -> {
             SlangDetailAdapter adapter = new SlangDetailAdapter(currentMeaningsCountryJoin, getContext());
@@ -78,12 +88,10 @@ public class SlangDetailFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null)
-        {
+        if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
@@ -98,6 +106,11 @@ public class SlangDetailFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @OnClick(R.id.img_slang_detail_heart)
+    public void onViewClicked() {
+        viewModel.toggleIsFavoriteById(slangId);
     }
 }
 

@@ -17,11 +17,25 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Slang title"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/slang_card_img_heart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:paddingRight="@dimen/activity_horizontal_margin_small"
+            android:paddingEnd="@dimen/activity_horizontal_margin_small"
+            app:srcCompat="@drawable/ic_heart_outline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
