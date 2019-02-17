@@ -12,6 +12,7 @@ public class AllSlangFragmentViewModel extends ViewModel {
 
     private LiveData<List<SlangEntry>> slangEntries;
     SpanishSlangRepository repository;
+    private LiveData<List<SlangEntry>> slangEntriesByCountry;
 
     AllSlangFragmentViewModel(SpanishSlangRepository repository) {
         this.repository = repository;
@@ -20,5 +21,9 @@ public class AllSlangFragmentViewModel extends ViewModel {
 
     public LiveData<List<SlangEntry>> getSlangEntries() {
         return slangEntries;
+    }
+
+    public LiveData<List<SlangEntry>> getSlangEntriesByCountry(String countryCode) {
+        return repository.getAllSlangByCountry(countryCode);
     }
 }

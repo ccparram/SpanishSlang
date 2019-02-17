@@ -6,18 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
 import com.zanacode.colombianslang.R;
+import com.zanacode.colombianslang.ui.allSlang.AllSlangFragment;
 import com.zanacode.colombianslang.utilities.Injector;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CountryFragment extends Fragment {
+public class CountryFragment extends Fragment implements CountryAdapter.CountryAdapterOnItemClickListener {
 
     @BindView(R.id.country_recycler)
     RecyclerView recycler;
@@ -47,16 +48,14 @@ public class CountryFragment extends Fragment {
         CountryViewModelFactory factory = Injector.provideCountryViewModelFactory(getActivity().getApplicationContext());
         viewModel = ViewModelProviders.of(getParentFragment(), factory).get(CountryFragmentViewModel.class);
 
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
         recycler.hasFixedSize();
 
         viewModel.getSlangEntries().observe(this, countriesEntries -> {
-            CountryAdapter adapter = new CountryAdapter(countriesEntries, getContext());
+            CountryAdapter adapter = new CountryAdapter(countriesEntries, getContext(), this);
             recycler.setAdapter(adapter);
         });
-
         return view;
     }
 
@@ -68,5 +67,16 @@ public class CountryFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onItemClick(String code, String name) {
+
+        AllSlangFragment fragment = AllSlangFragment.newInstance(code, name);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_content_frame, fragment)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 }

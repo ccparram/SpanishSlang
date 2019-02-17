@@ -18,9 +18,9 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
 
     private Context context;
     private List<SlangEntry> slangEntries;
-    private SlangAdapterOnItemCliclListener slangAdaptarOnItemClickHandler;
+    private SlangAdapterOnItemClickListener slangAdaptarOnItemClickHandler;
 
-    public SlangAdapter(Context context, SlangAdapterOnItemCliclListener listener) {
+    public SlangAdapter(Context context, SlangAdapterOnItemClickListener listener) {
         this.context = context;
         this.slangAdaptarOnItemClickHandler = listener;
     }
@@ -66,7 +66,7 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
         }
     }
 
-    public interface SlangAdapterOnItemCliclListener {
+    public interface SlangAdapterOnItemClickListener {
         void onItemClick(int slangId, String slangTitle);
     }
 }

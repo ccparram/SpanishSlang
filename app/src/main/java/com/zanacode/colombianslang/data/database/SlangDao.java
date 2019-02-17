@@ -20,6 +20,9 @@ public interface SlangDao {
     @Query("SELECT * FROM slang")
     LiveData<List<SlangEntry>> getAllSlangs();
 
+    @Query("SELECT * FROM slang WHERE id IN (SELECT slangId FROM meaning where countryCode = :code)")
+    LiveData<List<SlangEntry>> getAllSlangByCountry(String code);
+
     @Query("SELECT title FROM slang")
     LiveData<String[]> getSlangSuggestions();
 

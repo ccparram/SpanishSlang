@@ -11,8 +11,6 @@ import com.orhanobut.logger.Logger;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.data.database.CountryEntry;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
 
-    List<CountryEntry> countries;
-    Context context;
+    private List<CountryEntry> countries;
+    private Context context;
+    private final CountryAdapterOnItemClickListener countryAdapterOnItemClickListenerHandler;
 
-    public CountryAdapter(List<CountryEntry> countries, Context context) {
+    public CountryAdapter(List<CountryEntry> countries, Context context, CountryAdapterOnItemClickListener listener) {
         this.countries = countries;
         this.context = context;
+        this.countryAdapterOnItemClickListenerHandler = listener;
     }
 
     @NonNull
@@ -67,11 +67,17 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
             super(itemView);
             countryImg = itemView.findViewById(R.id.country_card_img);
             countryName = itemView.findViewById(R.id.country_card_country_name);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
+            CountryEntry countryEntry = countries.get(getAdapterPosition());
+            countryAdapterOnItemClickListenerHandler.onItemClick(countryEntry.getCode(), countryEntry.getName());
         }
+    }
+
+    public interface CountryAdapterOnItemClickListener{
+        void onItemClick(String code, String name);
     }
 }
