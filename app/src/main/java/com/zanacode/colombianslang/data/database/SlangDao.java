@@ -24,6 +24,9 @@ public interface SlangDao {
     @Query("SELECT * FROM slang WHERE id IN (SELECT slangId FROM meaning where countryCode = :code)")
     LiveData<List<SlangEntry>> getAllSlangByCountry(String code);
 
+    @Query("SELECT * FROM slang WHERE isFavorite = 1")
+    LiveData<List<SlangEntry>> getFavoriteSlang();
+
     @Query("SELECT title FROM slang")
     LiveData<String[]> getSlangSuggestions();
 

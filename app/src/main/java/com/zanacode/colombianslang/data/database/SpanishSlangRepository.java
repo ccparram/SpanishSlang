@@ -37,6 +37,10 @@ public class SpanishSlangRepository {
         return slangDao.getAllSlangByCountry(countryCode);
     }
 
+    public LiveData<List<SlangEntry>> getFavoriteSlang() {
+        return slangDao.getFavoriteSlang();
+    }
+
     public LiveData<String[]> getSlangSuggestions() {
         return slangDao.getSlangSuggestions();
     }

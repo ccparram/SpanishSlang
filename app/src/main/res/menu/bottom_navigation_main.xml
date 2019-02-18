@@ -9,9 +9,9 @@
         android:id="@+id/nav_favorite"
         android:title="Fav"
         android:icon="@drawable/ic_heart" />
-    <item
-        android:id="@+id/nav_random"
-        android:title="Random"
-        android:icon="@drawable/ic_shuffle_variant" />
+    <!--<item-->
+        <!--android:id="@+id/nav_random"-->
+        <!--android:title="Random"-->
+        <!--android:icon="@drawable/ic_shuffle_variant" />-->
 
 </menu>

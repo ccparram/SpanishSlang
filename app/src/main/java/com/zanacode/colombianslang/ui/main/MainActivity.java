@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zanacode.colombianslang.R;
-import com.zanacode.colombianslang.ui.favorite.FavoriteFragment;
+import com.zanacode.colombianslang.ui.allSlang.AllSlangFragment;
 import com.zanacode.colombianslang.ui.random.RandomFragment;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.ui.slang.SlangFragment;
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_favorite:
                 setTitle(menuItem.getTitle());
                 menuItem.setChecked(true);
-                navFragment = FavoriteFragment.newInstance();
+                navFragment = AllSlangFragment.newInstanceFavorites();
                 break;
             case R.id.nav_random:
                 setTitle(menuItem.getTitle());

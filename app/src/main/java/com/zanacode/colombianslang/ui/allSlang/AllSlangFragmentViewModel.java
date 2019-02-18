@@ -22,6 +22,10 @@ public class AllSlangFragmentViewModel extends ViewModel {
         return slangEntries;
     }
 
+    public LiveData<List<SlangEntry>> getFavoriteSlang() {
+        return repository.getFavoriteSlang();
+    }
+
     public LiveData<List<SlangEntry>> getSlangEntriesByCountry(String countryCode) {
         return repository.getAllSlangByCountry(countryCode);
     }
