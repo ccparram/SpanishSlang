@@ -1,6 +1,9 @@
 package com.zanacode.colombianslang.ui.slandDetail;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SlangDetailAdapter  extends RecyclerView.Adapter<SlangDetailAdapter.SlangDetailViewHolder> {
@@ -65,7 +70,13 @@ public class SlangDetailAdapter  extends RecyclerView.Adapter<SlangDetailAdapter
             e.printStackTrace();
         }
 
-        holder.countryImg.setImageDrawable(context.getResources().getDrawable(drawableId));
+
+        Resources res = context.getResources();
+        Bitmap src = BitmapFactory.decodeResource(res, drawableId);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(res, src);
+        dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
+
+        holder.countryImg.setImageDrawable(dr);
         holder.countryName.setText(countryName);
 
         addMeaningToLinearLayout(holder.parentLayout, meaningsCountryJoin);

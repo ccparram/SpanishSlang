@@ -1,6 +1,9 @@
 package com.zanacode.colombianslang.ui.allSlang;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import com.zanacode.colombianslang.data.database.SlangEntry;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.utilities.Injector;
 
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -121,7 +126,12 @@ public class AllSlangFragment extends Fragment implements
                 e.printStackTrace();
             }
 
-            countryCardImg.setImageDrawable(getResources().getDrawable(drawableId));
+            Resources res = getActivity().getResources();
+            Bitmap src = BitmapFactory.decodeResource(res, drawableId);
+            RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(res, src);
+            dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
+
+            countryCardImg.setImageDrawable(dr);
 
             viewModel.getSlangEntriesByCountry(countryCode).observe(this, slangEntries -> {
                 adapter.swapItems(slangEntries);

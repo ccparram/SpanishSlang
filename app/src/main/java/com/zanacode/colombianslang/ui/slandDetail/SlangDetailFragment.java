@@ -76,7 +76,7 @@ public class SlangDetailFragment extends DialogFragment {
         viewModel.setCurrentSlangId(slangId);
 
         viewModel.isSlangFavorite(slangId).observe(this, isFavorite -> {
-            int drawableId = isFavorite == 1 ? R.drawable.ic_heart : R.drawable.ic_heart_outline;
+            int drawableId = isFavorite == 1 ? R.drawable.ic_cupid : R.drawable.ic_cupid_outline;
             slangDetailHeart.setImageDrawable(getResources().getDrawable(drawableId));
         });
 

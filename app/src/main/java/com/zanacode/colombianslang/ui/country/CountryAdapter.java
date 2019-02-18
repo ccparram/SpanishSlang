@@ -1,19 +1,23 @@
 package com.zanacode.colombianslang.ui.country;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.data.database.CountryEntry;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
@@ -50,7 +54,12 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
             e.printStackTrace();
         }
 
-        holder.countryImg.setImageDrawable(context.getResources().getDrawable(drawableId));
+        Resources res = context.getResources();
+        Bitmap src = BitmapFactory.decodeResource(res, drawableId);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(res, src);
+        dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
+
+        holder.countryImg.setImageDrawable(dr);
         holder.countryName.setText(countries.get(position).getName());
     }
 

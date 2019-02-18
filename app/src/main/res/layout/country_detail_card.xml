@@ -11,20 +11,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Country name"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@+id/country_detail_img_flag"
-        app:layout_constraintEnd_toStartOf="@+id/country_detail_img_flag" />
+        app:layout_constraintEnd_toStartOf="@+id/country_detail_img_flag"
+        app:layout_constraintTop_toTopOf="@+id/country_detail_img_flag" />
 
     <ImageView
         android:id="@+id/country_detail_img_flag"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-
         android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_default_flag" />

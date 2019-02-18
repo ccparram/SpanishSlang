@@ -3,11 +3,11 @@ package com.zanacode.colombianslang.ui.main;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.ui.allSlang.AllSlangFragment;
-import com.zanacode.colombianslang.ui.random.RandomFragment;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
 import com.zanacode.colombianslang.ui.slang.SlangFragment;
 import com.zanacode.colombianslang.utilities.Injector;
@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
-            searchView.addSuggestions(slangSuggestions);
-        });
+//        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
+//            searchView.addSuggestions(slangSuggestions);
+//        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) -> {
             navigate(menuItem);
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_search) {
             searchView.openSearch();
+            bottomNavigationView.setVisibility(View.GONE);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -129,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
                 navFragment = AllSlangFragment.newInstanceFavorites();
                 break;
-            case R.id.nav_random:
-                setTitle(menuItem.getTitle());
-                menuItem.setChecked(true);
-                navFragment = RandomFragment.newInstance();
-                break;
+//            case R.id.nav_random:
+//                setTitle(menuItem.getTitle());
+//                menuItem.setChecked(true);
+//                navFragment = RandomFragment.newInstance();
+//                break;
         }
 
         if (navFragment != null) {
@@ -145,9 +146,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (bottomNavigationView.getSelectedItemId() != R.id.nav_slang && !searchView.isOpen()) {
+            navigate(bottomNavigationView.getMenu().getItem(0));
+            return;
+        }
         if (searchView.isOpen()) {
             // Close the search on the back button press.
             searchView.closeSearch();
+            bottomNavigationView.setVisibility(View.VISIBLE);
         } else {
             super.onBackPressed();
         }

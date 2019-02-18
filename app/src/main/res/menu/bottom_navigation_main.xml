@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_format_list_bulleted" />
     <item
         android:id="@+id/nav_favorite"
-        android:title="Fav"
+        android:title="Favorites"
         android:icon="@drawable/ic_heart" />
     <!--<item-->
         <!--android:id="@+id/nav_random"-->

@@ -42,7 +42,7 @@ public class SlangAdapter extends RecyclerView.Adapter<SlangAdapter.SlangAdapter
     public void onBindViewHolder(@NonNull SlangAdapterViewHolder holder, int position) {
         SlangEntry slang = slangEntries.get(position);
         holder.slangTitleTxt.setText(slang.getTitle());
-        int drawableId = slang.isFavorite() ? R.drawable.ic_heart : R.drawable.ic_heart_outline;
+        int drawableId = slang.isFavorite() ? R.drawable.ic_heart_grey600_48dp : R.drawable.ic_heart_outline_grey600_48dp;
         holder.slangFavoriteImg.setImageDrawable(context.getResources().getDrawable(drawableId));
     }
 
