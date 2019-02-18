@@ -65,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchView.setSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewOpened() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                bottomNavigationView.setVisibility(View.VISIBLE);
+            }
+        });
+
 //        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
 //            searchView.addSuggestions(slangSuggestions);
 //        });

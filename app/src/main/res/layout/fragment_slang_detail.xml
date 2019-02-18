@@ -33,7 +33,7 @@
             android:layout_height="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_heart_outline" />
+            app:srcCompat="@drawable/ic_cupid_outline" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/slang_detail_recycler"
