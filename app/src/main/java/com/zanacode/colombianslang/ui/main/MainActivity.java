@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
-//            searchView.addSuggestions(slangSuggestions);
-//        });
+        viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
+            searchView.addSuggestions(slangSuggestions);
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) -> {
             navigate(menuItem);
