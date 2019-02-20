@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zanacode.colombianslang.AppExecutors;
 import com.zanacode.colombianslang.R;
 import com.zanacode.colombianslang.ui.allSlang.AllSlangFragment;
 import com.zanacode.colombianslang.ui.slandDetail.SlangDetailFragment;
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        int i = 0;
+
 
         MainViewModelFactory factory = Injector.provideMainViewModelFactory(getApplicationContext());
         viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
@@ -78,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewModel.getSlangSuggestions().observe(this, slangSuggestions -> {
-            searchView.addSuggestions(slangSuggestions);
+
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                searchView.addSuggestions(slangSuggestions);
+            });
         });
 
         bottomNavigationView.setOnNavigationItemSelectedListener((@NonNull MenuItem menuItem) -> {
