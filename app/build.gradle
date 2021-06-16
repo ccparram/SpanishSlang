@@ -44,7 +44,7 @@ dependencies {
     //Extras
     implementation "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
-    implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
+    implementation 'br.com.mauker.materialsearchview:materialsearchview:1.3.0-rc02'
 
     //Debug
     implementation 'com.orhanobut:logger:2.2.0'
